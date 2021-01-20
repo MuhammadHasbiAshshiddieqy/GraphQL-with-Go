@@ -1,0 +1,65 @@
+type GqlCustomer {
+  id: Int!
+  first_name: String!
+  last_name: String!
+  company_name: String!
+  email: String!
+  phone: String!
+  customer_address: GqlCustomerAddresse!
+}
+
+type GqlCustomerAddresse {
+  name: String!
+  phone: String!
+  address: String!
+  postal_code: String!
+  country: String!
+  province: String!
+  city: String!
+  sub_district: String!
+  billing_name: String!
+  billing_phone: String!
+  billing_address: String!
+  billing_postal_code: String!
+  billing_country: String!
+  billing_province: String!
+  billing_city: String!
+  billing_sub_district: String!
+}
+
+input GqlCustomerInput {
+  name: String!
+  first_name: String!
+  last_name: String!
+  company_name: String!
+  email: String!
+  phone: String!
+  customer_address: GqlCustomerAddresseInput!
+}
+
+input GqlCustomerAddresseInput {
+  name: String!
+  phone: String!
+  address: String!
+  postal_code: String!
+  country: String!
+  province: String!
+  city: String!
+  sub_district: String!
+  billing_name: String!
+  billing_phone: String!
+  billing_address: String!
+  billing_postal_code: String!
+  billing_country: String!
+  billing_province: String!
+  billing_city: String!
+  billing_sub_district: String!
+}
+
+type Mutation {
+    createCustomer(input: GqlCustomerInput!): GqlCustomer!
+}
+
+type Query {
+  customers: [GqlCustomer!]!
+}
