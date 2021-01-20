@@ -51,7 +51,6 @@ type GqlCustomerAddresseInput struct {
 }
 
 type GqlCustomerInput struct {
-	Name            string                    `json:"name"`
 	FirstName       string                    `json:"first_name"`
 	LastName        string                    `json:"last_name"`
 	CompanyName     string                    `json:"company_name"`

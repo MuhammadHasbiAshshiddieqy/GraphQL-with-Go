@@ -377,7 +377,6 @@ type GqlCustomerAddresse {
 }
 
 input GqlCustomerInput {
-  name: String!
   first_name: String!
   last_name: String!
   company_name: String!
@@ -2674,14 +2673,6 @@ func (ec *executionContext) unmarshalInputGqlCustomerInput(ctx context.Context, 
 
 	for k, v := range asMap {
 		switch k {
-		case "name":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			it.Name, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "first_name":
 			var err error
 

@@ -1,0 +1,65 @@
+================================== MUTATION ===================================
+
+// QUERY VARIABLES
+
+{
+  "input": {
+    "first_name": "Hasbi",
+    "last_name": "Ashshiddieqy",
+    "company_name": "Forstok",
+    "email": "hasbi@gmail.com",
+    "phone": "081111111111",
+    "customer_address": {
+        "name": "Hasbi Ashshiddieqy",
+        "phone": "081111111111",
+        "address": "Jl. Pondok Cibubur",
+        "postal_code": "16452",
+        "country": "Indonesia",
+        "province": "Jawa Barat",
+        "city": "Depok",
+        "sub_district": "Cimanggis",
+        "billing_name": "Sabar Sobarudin",
+        "billing_phone": "08222222222",
+        "billing_address": "Jl. Bingkai Permata",
+        "billing_postal_code": "16451",
+        "billing_country": "Indonesia",
+        "billing_province": "Jawa Barat",
+        "billing_city": "Depok",
+        "billing_sub_district": "Kukusan"
+    }
+  }
+}
+
+
+// CREATE CUSTOMER
+
+mutation createCustomer ($input: GqlCustomerInput!) {
+  createCustomer(input: $input) {
+    id
+    first_name
+    last_name
+    company_name
+    email
+    phone
+    customer_address {
+        name
+        phone
+        address
+        postal_code
+        country
+        province
+        city
+        sub_district
+        billing_name
+        billing_phone
+        billing_address
+        billing_postal_code
+        billing_country
+        billing_province
+        billing_city
+        billing_sub_district
+        }
+    }
+}
+
+================================================================================
