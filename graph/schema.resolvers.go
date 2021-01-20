@@ -10,28 +10,6 @@ import (
 	"github.com/MuhammadHasbiAshshiddieqy/GraphQL-with-Go/graph/model"
 )
 
-func mapCustomerAddress(addressInput *model.GqlCustomerAddresseInput) (*model.GqlCustomerAddresse) {
-		address := &model.GqlCustomerAddresse {
-				Name: addressInput.Name,
-				Phone: addressInput.Phone,
-				Address: addressInput.Address,
-				PostalCode: addressInput.PostalCode,
-				Country: addressInput.Country,
-				Province: addressInput.Province,
-				City: addressInput.City,
-				SubDistrict: addressInput.SubDistrict,
-				BillingName: addressInput.BillingName,
-				BillingPhone: addressInput.BillingPhone,
-				BillingAddress: addressInput.BillingAddress,
-				BillingPostalCode: addressInput.BillingPostalCode,
-				BillingCountry: addressInput.BillingCountry,
-				BillingProvince: addressInput.BillingProvince,
-				BillingCity: addressInput.BillingCity,
-				BillingSubDistrict: addressInput.BillingSubDistrict,
-		}
-    return address
-}
-
 func (r *mutationResolver) CreateCustomer(ctx context.Context, input model.GqlCustomerInput) (*model.GqlCustomer, error) {
 		customer := model.GqlCustomer {
 				FirstName: input.FirstName,
@@ -45,6 +23,12 @@ func (r *mutationResolver) CreateCustomer(ctx context.Context, input model.GqlCu
     if err != nil {
         return nil, err
     }
+
+		err = r.DB.Create(&customer.CustomerAddress).Error
+    if err != nil {
+        return nil, err
+    }
+
     return &customer, nil
 }
 
@@ -66,3 +50,30 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+
+// =================== resolver support ============================
+
+func mapCustomerAddress(addressInput *model.GqlCustomerAddresseInput) (*model.GqlCustomerAddresse) {
+		var address *model.GqlCustomerAddresse
+		address = &model.GqlCustomerAddresse {
+				Name: addressInput.Name,
+				Phone: addressInput.Phone,
+				Address: addressInput.Address,
+				PostalCode: addressInput.PostalCode,
+				Country: addressInput.Country,
+				Province: addressInput.Province,
+				City: addressInput.City,
+				SubDistrict: addressInput.SubDistrict,
+				BillingName: addressInput.BillingName,
+				BillingPhone: addressInput.BillingPhone,
+				BillingAddress: addressInput.BillingAddress,
+				BillingPostalCode: addressInput.BillingPostalCode,
+				BillingCountry: addressInput.BillingCountry,
+				BillingProvince: addressInput.BillingProvince,
+				BillingCity: addressInput.BillingCity,
+				BillingSubDistrict: addressInput.BillingSubDistrict,
+		}
+
+    return address
+}

@@ -9,6 +9,7 @@ type GqlCustomer {
 }
 
 type GqlCustomerAddresse {
+  id: Int!
   name: String!
   phone: String!
   address: String!
