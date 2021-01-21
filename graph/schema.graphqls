@@ -62,4 +62,5 @@ type Mutation {
 
 type Query {
   customers: [GqlCustomer!]!
+  customer(phone: String!): GqlCustomer!
 }

@@ -42,6 +42,26 @@ func (r *queryResolver) Customers(ctx context.Context) ([]*model.GqlCustomer, er
 		return customers, nil
 }
 
+func (r *queryResolver) Customer(ctx context.Context, phone string) (*model.GqlCustomer, error) {
+		var customer	[]*model.GqlCustomer
+		var address		[]*model.GqlCustomerAddresse
+
+		err := r.DB.Set("gorm:auto_preload", true).Where("phone = ?", phone).Find(&customer).Error
+		if err != nil {
+			return nil, err
+		}
+
+		err = r.DB.Set("gorm:auto_preload", true).Where("phone = ?", phone).Find(&address).Error
+		if err != nil {
+			return nil, err
+		}
+
+		data := customer[0]
+		data.CustomerAddress = address[0]
+
+		return data, nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

@@ -66,36 +66,44 @@ mutation createCustomer ($input: GqlCustomerInput!) {
 
 // GET ALL CUSTOMER
 
-{
-  "data": {
-    "customers": [
-    {
-      id
-      first_name
-      last_name
-      company_name
-      email
-      phone
-      customer_address {
-          id
-          name
-          phone
-          address
-          postal_code
-          country
-          province
-          city
-          sub_district
-          billing_name
-          billing_phone
-          billing_address
-          billing_postal_code
-          billing_country
-          billing_province
-          billing_city
-          billing_sub_district
-          }
-      }
-    ]
+query customers {
+  customers {
+    id
+    first_name
+    last_name
+    company_name
+    email
+    phone
+  }
+}
+
+// GET CUSTOMER BY PHONE
+
+query customer {
+  customer(phone: "081111111111") {
+    id
+    first_name
+    last_name
+    company_name
+    email
+    phone
+    customer_address {
+        name
+        phone
+        address
+        postal_code
+        country
+        province
+        city
+        sub_district
+        billing_name
+        billing_phone
+        billing_address
+        billing_postal_code
+        billing_country
+        billing_province
+        billing_city
+        billing_sub_district
+        }
   }
 }
