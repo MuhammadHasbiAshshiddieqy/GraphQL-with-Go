@@ -107,3 +107,41 @@ query customer {
         }
   }
 }
+
+// LOCATION
+
+query countries {
+  countries {
+    countries {
+    	id
+    	name
+    }
+  }
+}
+
+query provinces {
+  provinces(country_id:1) {
+    provinces {
+    	id
+    	name
+    }
+  }
+}
+
+query cities {
+  cities(province_id:1) {
+    cities {
+    	id
+    	name
+    }
+  }
+}
+
+query subdistricts {
+  subdistricts(city_id:2) {
+    sub_districts {
+    	id
+    	name
+    }
+  }
+}

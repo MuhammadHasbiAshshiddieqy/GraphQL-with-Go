@@ -56,11 +56,83 @@ input GqlCustomerAddresseInput {
   billing_sub_district: String!
 }
 
+type Countrie {
+  id: Int!
+  name: String!
+}
+
+type Province {
+  id: Int!
+  name: String!
+}
+
+input ProvinceInput {
+  country_id: Int!
+}
+
+type Citie {
+  id: Int!
+  name: String!
+}
+
+input CitieInput {
+  province_id: Int!
+}
+
+type District {
+  id: Int!
+  name: String!
+}
+
+type SubDistrict {
+  id: Int!
+  name: String!
+}
+
+input SubDistrictInput {
+  city_id: Int!
+}
+
+type NewCustomerAddress {
+  countries: [Countrie!]!
+  provinces: [Province!]!
+  cities: [Citie!]!
+  sub_districts: [SubDistrict!]!
+}
+
+type OrderDropshipper {
+  id: Int!
+  name: String!
+  phone: String!
+  address_1: String!
+  postal_code: String!
+  country: String!
+  province: String!
+  city: String!
+  sub_district: String!
+}
+
+input OrderDropshipperInput {
+  name: String!
+  phone: String!
+  address_1: String!
+  postal_code: String!
+  country: String!
+  province: String!
+  city: String!
+  sub_district: String!
+}
+
 type Mutation {
     createCustomer(input: GqlCustomerInput!): GqlCustomer!
+    createShippingAddress(input: OrderDropshipperInput!): OrderDropshipper!
 }
 
 type Query {
   customers: [GqlCustomer!]!
   customer(phone: String!): GqlCustomer!
+  countries: NewCustomerAddress!
+  provinces(country_id: Int!): NewCustomerAddress!
+  cities(province_id: Int!): NewCustomerAddress!
+  subdistricts(city_id: Int!): NewCustomerAddress!
 }

@@ -2,6 +2,25 @@
 
 package model
 
+type Citie struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type CitieInput struct {
+	ProvinceID int `json:"province_id"`
+}
+
+type Countrie struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type District struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
 type GqlCustomer struct {
 	ID              int                  `json:"id"`
 	FirstName       string               `json:"first_name"`
@@ -58,4 +77,52 @@ type GqlCustomerInput struct {
 	Email           string                    `json:"email"`
 	Phone           string                    `json:"phone"`
 	CustomerAddress *GqlCustomerAddresseInput `json:"customer_address"`
+}
+
+type NewCustomerAddress struct {
+	Countries    []*Countrie    `json:"countries"`
+	Provinces    []*Province    `json:"provinces"`
+	Cities       []*Citie       `json:"cities"`
+	SubDistricts []*SubDistrict `json:"sub_districts"`
+}
+
+type OrderDropshipper struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Phone       string `json:"phone"`
+	Address1    string `json:"address_1"`
+	PostalCode  string `json:"postal_code"`
+	Country     string `json:"country"`
+	Province    string `json:"province"`
+	City        string `json:"city"`
+	SubDistrict string `json:"sub_district"`
+}
+
+type OrderDropshipperInput struct {
+	Name        string `json:"name"`
+	Phone       string `json:"phone"`
+	Address1    string `json:"address_1"`
+	PostalCode  string `json:"postal_code"`
+	Country     string `json:"country"`
+	Province    string `json:"province"`
+	City        string `json:"city"`
+	SubDistrict string `json:"sub_district"`
+}
+
+type Province struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type ProvinceInput struct {
+	CountryID int `json:"country_id"`
+}
+
+type SubDistrict struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type SubDistrictInput struct {
+	CityID int `json:"city_id"`
 }

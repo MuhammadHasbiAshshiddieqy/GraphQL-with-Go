@@ -32,6 +32,25 @@ func (r *mutationResolver) CreateCustomer(ctx context.Context, input model.GqlCu
     return &customer, nil
 }
 
+func (r *mutationResolver) CreateShippingAddress(ctx context.Context, input model.OrderDropshipperInput) (*model.OrderDropshipper, error) {
+	shipping := model.OrderDropshipper {
+		Name: input.Name,
+		Phone: input.Phone,
+		Address1: input.Address1,
+		PostalCode: input.PostalCode,
+		Country: input.Country,
+		Province: input.Province,
+		City: input.City,
+		SubDistrict: input.SubDistrict,
+	}
+	err := r.DB.Create(&shipping).Error
+	if err != nil {
+			return nil, err
+	}
+
+	return &shipping, nil
+}
+
 func (r *queryResolver) Customers(ctx context.Context) ([]*model.GqlCustomer, error) {
 		var customers []*model.GqlCustomer
 
@@ -60,6 +79,65 @@ func (r *queryResolver) Customer(ctx context.Context, phone string) (*model.GqlC
 		data.CustomerAddress = address[0]
 
 		return data, nil
+}
+
+func (r *queryResolver) Countries(ctx context.Context) (*model.NewCustomerAddress, error) {
+	var address model.NewCustomerAddress
+	var countries []*model.Countrie
+
+	err := r.DB.Set("gorm:auto_preload", true).Select("id, name").Find(&countries).Error
+	if err != nil {
+		return nil, err
+	}
+	address.Countries = countries
+	return &address, nil
+}
+
+func (r *queryResolver) Provinces(ctx context.Context, countryID int) (*model.NewCustomerAddress, error) {
+	var address model.NewCustomerAddress
+	var provinces []*model.Province
+
+	err := r.DB.Set("gorm:auto_preload", true).Select("id, name").Where("country_id = ?", countryID).Find(&provinces).Error
+	if err != nil {
+		return nil, err
+	}
+
+	address.Provinces = provinces
+	return &address, nil
+}
+
+func (r *queryResolver) Cities(ctx context.Context, provinceID int) (*model.NewCustomerAddress, error) {
+	var address model.NewCustomerAddress
+	var cities []*model.Citie
+
+	err := r.DB.Set("gorm:auto_preload", true).Select("id, name").Where("province_id = ?", provinceID).Find(&cities).Error
+	if err != nil {
+		return nil, err
+	}
+
+	address.Cities = cities
+	return &address, nil
+}
+
+func (r *queryResolver) Subdistricts(ctx context.Context, cityID int) (*model.NewCustomerAddress, error) {
+	var address model.NewCustomerAddress
+	var districts []*model.District
+	var subdistricts []*model.SubDistrict
+
+	err := r.DB.Set("gorm:auto_preload", true).Select("id, name").Where("city_id = ?", cityID).Find(&districts).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for _, district := range districts {
+		err := r.DB.Set("gorm:auto_preload", true).Select("id, name").Where("district_id = ?", district.ID).Find(&subdistricts).Error
+		if err != nil {
+			return nil, err
+		}
+		address.SubDistricts = append(address.SubDistricts,subdistricts...)
+	}
+
+	return &address, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
