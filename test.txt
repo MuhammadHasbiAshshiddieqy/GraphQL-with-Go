@@ -1,6 +1,6 @@
 ================================== MUTATION ===================================
 
-// QUERY VARIABLES
+// QUERY VARIABLES CUSTOMERS
 
 {
   "input": {
@@ -62,11 +62,43 @@ mutation createCustomer ($input: GqlCustomerInput!) {
     }
 }
 
+***********************************
+
+// QUERY VARIABLES SHIPPING ADDRESS
+
+{
+  "input": {
+    "name": "Hasbi Ashshiddieqy",
+    "phone": "081111111111",
+    "address_1": "Jl. Pondok Cibubur",
+    "postal_code": "16452",
+    "country": "Indonesia",
+    "province": "Jawa Barat",
+    "city": "Depok",
+    "sub_district": "Cimanggis"
+  }
+}
+
+// CREATE SHIPPING ADDRESS
+
+mutation createShippingAddress ($input: OrderDropshipperInput!) {
+  createShippingAddress(input: $input) {
+      id
+      name
+      phone
+      address_1
+      postal_code
+      country
+      province
+      city
+      sub_district
+    }
+}
 ================================= QUERY ========================================
 
 // GET ALL CUSTOMER
 
-query customers {
+query {
   customers {
     id
     first_name
@@ -79,7 +111,7 @@ query customers {
 
 // GET CUSTOMER BY PHONE
 
-query customer {
+query {
   customer(phone: "081111111111") {
     id
     first_name
@@ -110,7 +142,7 @@ query customer {
 
 // LOCATION
 
-query countries {
+query {
   countries {
     countries {
     	id
@@ -119,7 +151,7 @@ query countries {
   }
 }
 
-query provinces {
+query {
   provinces(country_id:1) {
     provinces {
     	id
@@ -128,7 +160,7 @@ query provinces {
   }
 }
 
-query cities {
+query {
   cities(province_id:1) {
     cities {
     	id
@@ -137,7 +169,7 @@ query cities {
   }
 }
 
-query subdistricts {
+query {
   subdistricts(city_id:2) {
     sub_districts {
     	id
