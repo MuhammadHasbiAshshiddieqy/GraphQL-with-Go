@@ -1,31 +1,37 @@
+======================== NOT EXAMPLE FOR ALL SCHEMA ===========================
+
+
 ================================== MUTATION ===================================
 
-// QUERY VARIABLES CUSTOMERS
+// REQUEST HEADER CREATE CUSTOMER
+
+{
+  "context": "{\"profile_id\":81}"
+}
+
+
+// QUERY VARIABLES CREATE CUSTOMER
 
 {
   "input": {
-    "first_name": "Hasbi",
-    "last_name": "Ashshiddieqy",
-    "company_name": "Forstok",
-    "email": "hasbi@gmail.com",
-    "phone": "081111111111",
-    "customer_address": {
-        "name": "Hasbi Ashshiddieqy",
-        "phone": "081111111111",
+    "firstName": "Test",
+    "lastName": "Customer Senin3",
+    "companyName": "Forstok",
+    "email": "test@example.com",
+    "phone": "0817",
+    "billingAddress": {
+        "billingName": "Billing Customer Senin3",
+        "billingPhone": "0815",
+        "billingAddress": "Jl. Bingkai Permata",
+        "billingPostalCode": "16451",
+        "billingSubDistrictId": 37045
+    },
+    "shippingAddress": {
+        "name": "Test Customer Senin3",
+        "phone": "0817",
         "address": "Jl. Pondok Cibubur",
-        "postal_code": "16452",
-        "country": "Indonesia",
-        "province": "Jawa Barat",
-        "city": "Depok",
-        "sub_district": "Cimanggis",
-        "billing_name": "Sabar Sobarudin",
-        "billing_phone": "08222222222",
-        "billing_address": "Jl. Bingkai Permata",
-        "billing_postal_code": "16451",
-        "billing_country": "Indonesia",
-        "billing_province": "Jawa Barat",
-        "billing_city": "Depok",
-        "billing_sub_district": "Kukusan"
+        "postalCode": "16452",
+        "subDistrictId": 37045
     }
   }
 }
@@ -33,147 +39,56 @@
 
 // CREATE CUSTOMER
 
-mutation createCustomer ($input: GqlCustomerInput!) {
+mutation createCustomer ($input: CreateCustomerInput!) {
   createCustomer(input: $input) {
-    id
-    first_name
-    last_name
-    company_name
-    email
-    phone
-    customer_address {
-        name
-        phone
-        address
-        postal_code
-        country
-        province
-        city
-        sub_district
-        billing_name
-        billing_phone
-        billing_address
-        billing_postal_code
-        billing_country
-        billing_province
-        billing_city
-        billing_sub_district
-        }
-    }
-}
-
-***********************************
-
-// QUERY VARIABLES SHIPPING ADDRESS
-
-{
-  "input": {
-    "name": "Hasbi Ashshiddieqy",
-    "phone": "081111111111",
-    "address_1": "Jl. Pondok Cibubur",
-    "postal_code": "16452",
-    "country": "Indonesia",
-    "province": "Jawa Barat",
-    "city": "Depok",
-    "sub_district": "Cimanggis"
-  }
-}
-
-// CREATE SHIPPING ADDRESS
-
-mutation createShippingAddress ($input: OrderDropshipperInput!) {
-  createShippingAddress(input: $input) {
+    customer{
       id
-      name
+      firstName
+      lastName
+      companyName
+      email
       phone
-      address_1
-      postal_code
-      country
-      province
-      city
-      sub_district
+      profileId
+      customerAddress {
+          id
+          customerId
+          name
+          phone
+          address
+          postalCode
+          country
+          province
+          city
+          district
+          subDistrict
+          billingName
+          billingPhone
+          billingAddress
+          billingPostalCode
+          billingCountry
+          billingProvince
+          billingCity
+          billingDistrict
+          billingSubDistrict
+      }
     }
+  }
 }
+
 ================================= QUERY ========================================
-
-// GET ALL CUSTOMER
-
-query {
-  customers {
-    id
-    first_name
-    last_name
-    company_name
-    email
-    phone
-  }
-}
-
-// GET CUSTOMER BY PHONE
-
-query {
-  customer(phone: "081111111111") {
-    id
-    first_name
-    last_name
-    company_name
-    email
-    phone
-    customer_address {
-        name
-        phone
-        address
-        postal_code
-        country
-        province
-        city
-        sub_district
-        billing_name
-        billing_phone
-        billing_address
-        billing_postal_code
-        billing_country
-        billing_province
-        billing_city
-        billing_sub_district
-        }
-  }
-}
 
 // LOCATION
 
 query {
+
   countries {
-    countries {
     	id
     	name
-    }
   }
-}
 
-query {
-  provinces(country_id:1) {
-    provinces {
+  provinces(countryId:1) {
     	id
     	name
-    }
   }
-}
 
-query {
-  cities(province_id:1) {
-    cities {
-    	id
-    	name
-    }
-  }
-}
-
-query {
-  subdistricts(city_id:2) {
-    sub_districts {
-    	id
-    	name
-    }
-  }
 }

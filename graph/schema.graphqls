@@ -1,138 +1,138 @@
-type GqlCustomer {
-  id: Int!
-  first_name: String!
-  last_name: String!
-  company_name: String!
-  email: String!
-  phone: String!
-  customer_address: GqlCustomerAddresse!
-}
-
-type GqlCustomerAddresse {
-  id: Int!
-  name: String!
-  phone: String!
-  address: String!
-  postal_code: String!
-  country: String!
-  province: String!
-  city: String!
-  sub_district: String!
-  billing_name: String!
-  billing_phone: String!
-  billing_address: String!
-  billing_postal_code: String!
-  billing_country: String!
-  billing_province: String!
-  billing_city: String!
-  billing_sub_district: String!
-}
-
-input GqlCustomerInput {
-  first_name: String!
-  last_name: String!
-  company_name: String!
-  email: String!
-  phone: String!
-  customer_address: GqlCustomerAddresseInput!
-}
-
-input GqlCustomerAddresseInput {
-  name: String!
-  phone: String!
-  address: String!
-  postal_code: String!
-  country: String!
-  province: String!
-  city: String!
-  sub_district: String!
-  billing_name: String!
-  billing_phone: String!
-  billing_address: String!
-  billing_postal_code: String!
-  billing_country: String!
-  billing_province: String!
-  billing_city: String!
-  billing_sub_district: String!
-}
-
-type Countrie {
-  id: Int!
-  name: String!
+type Country {
+  id: ID!
+  name: String
+  lat: String
+  lon: String
+  code: String
 }
 
 type Province {
-  id: Int!
-  name: String!
+  id: ID!
+  name: String
+  lat: String
+  lon: String
+  countryId: Int
+  country: Country
 }
 
 input ProvinceInput {
-  country_id: Int!
+  countryId: Int!
 }
 
-type Citie {
-  id: Int!
-  name: String!
+type City {
+  id: ID!
+  name: String
+  lat: String
+  lon: String
+  provinceId: Int
+  province: Province
 }
 
-input CitieInput {
-  province_id: Int!
+input CityInput {
+  provinceId: Int!
 }
 
 type District {
-  id: Int!
+  id: ID!
   name: String!
+  lat: String
+  lon: String
+  cityId: Int
+  city: City
+}
+
+input DistrictInput {
+  cityId: Int!
 }
 
 type SubDistrict {
-  id: Int!
-  name: String!
+  id: ID!
+  name: String
+  lat: String
+  lon: String
+  postalCode: String
+  districtId: Int
+  district: District
 }
 
 input SubDistrictInput {
-  city_id: Int!
+  districtId: Int!
 }
 
-type NewCustomerAddress {
-  countries: [Countrie!]!
-  provinces: [Province!]!
-  cities: [Citie!]!
-  sub_districts: [SubDistrict!]!
-}
-
-type OrderDropshipper {
-  id: Int!
+type CustomerAddress {
+  id: ID!
+  customerId: Int!
   name: String!
   phone: String!
-  address_1: String!
-  postal_code: String!
+  address: String!
+  postalCode: String!
   country: String!
   province: String!
   city: String!
-  sub_district: String!
+  district: String!
+  subDistrict: String!
+  billingName: String!
+  billingPhone: String!
+  billingAddress: String!
+  billingPostalCode: String!
+  billingCountry: String!
+  billingProvince: String!
+  billingCity: String!
+  billingDistrict: String!
+  billingSubDistrict: String!
 }
 
-input OrderDropshipperInput {
+type Customer {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  companyName: String!
+  email: String!
+  phone: String!
+  profileId: Int!
+  customerAddress: CustomerAddress
+}
+
+input BillingAddressInput {
+  billingName: String!
+  billingPhone: String!
+  billingAddress: String!
+  billingPostalCode: String!
+  billingSubDistrictId: Int!
+}
+
+input ShippingAddressInput {
   name: String!
   phone: String!
-  address_1: String!
-  postal_code: String!
-  country: String!
-  province: String!
-  city: String!
-  sub_district: String!
+  address: String!
+  postalCode: String!
+  subDistrictId: Int!
 }
 
-type Mutation {
-    createCustomer(input: GqlCustomerInput!): GqlCustomer!
-    createShippingAddress(input: OrderDropshipperInput!): OrderDropshipper!
+input CreateCustomerInput {
+  firstName: String!
+  lastName: String!
+  companyName: String!
+  email: String!
+  phone: String!
+  billingAddress: BillingAddressInput!
+  shippingAddress: ShippingAddressInput!
+}
+
+type CreateCustomerPayload {
+  customer: Customer!
 }
 
 type Query {
-  customers: [GqlCustomer!]!
-  customer(phone: String!): GqlCustomer!
-  countries: NewCustomerAddress!
-  provinces(country_id: Int!): NewCustomerAddress!
-  cities(province_id: Int!): NewCustomerAddress!
-  subdistricts(city_id: Int!): NewCustomerAddress!
+  customers(search: String!, limit: Int=5): [Customer!]!
+  customer(id: Int!): Customer!
+  countries: [Country!]!
+  provinces(countryId: Int!): [Province!]!
+  cities(provinceId: Int!): [City!]!
+  districts(cityId: Int!): [District!]!
+  subDistricts(districtId: Int!): [SubDistrict!]!
+}
+
+type Mutation {
+  createCustomer(input: CreateCustomerInput!): CreateCustomerPayload
 }

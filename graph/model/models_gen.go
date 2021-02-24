@@ -2,127 +2,127 @@
 
 package model
 
-type Citie struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+type BillingAddressInput struct {
+	BillingName          string `json:"billingName"`
+	BillingPhone         string `json:"billingPhone"`
+	BillingAddress       string `json:"billingAddress"`
+	BillingPostalCode    string `json:"billingPostalCode"`
+	BillingSubDistrictID int    `json:"billingSubDistrictId"`
 }
 
-type CitieInput struct {
-	ProvinceID int `json:"province_id"`
+type City struct {
+	ID         string    `json:"id"`
+	Name       *string   `json:"name"`
+	Lat        *string   `json:"lat"`
+	Lon        *string   `json:"lon"`
+	ProvinceID *int      `json:"provinceId"`
+	Province   *Province `json:"province"`
 }
 
-type Countrie struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+type CityInput struct {
+	ProvinceID int `json:"provinceId"`
+}
+
+type Country struct {
+	ID   string  `json:"id"`
+	Name *string `json:"name"`
+	Lat  *string `json:"lat"`
+	Lon  *string `json:"lon"`
+	Code *string `json:"code"`
+}
+
+type CreateCustomerInput struct {
+	FirstName       string                `json:"firstName"`
+	LastName        string                `json:"lastName"`
+	CompanyName     string                `json:"companyName"`
+	Email           string                `json:"email"`
+	Phone           string                `json:"phone"`
+	BillingAddress  *BillingAddressInput  `json:"billingAddress"`
+	ShippingAddress *ShippingAddressInput `json:"shippingAddress"`
+}
+
+type CreateCustomerPayload struct {
+	Customer *Customer `json:"customer"`
+}
+
+type Customer struct {
+	ID              string           `json:"id"`
+	FirstName       string           `json:"firstName"`
+	LastName        string           `json:"lastName"`
+	CompanyName     string           `json:"companyName"`
+	Email           string           `json:"email"`
+	Phone           string           `json:"phone"`
+	ProfileID       int              `json:"profileId"`
+	CustomerAddress *CustomerAddress `json:"customerAddress"`
+}
+
+type CustomerAddress struct {
+	ID                 string `json:"id"`
+	CustomerID         int    `json:"customerId"`
+	Name               string `json:"name"`
+	Phone              string `json:"phone"`
+	Address            string `gorm:"column:address_1" json:"address"`
+	PostalCode         string `json:"postalCode"`
+	Country            string `json:"country"`
+	Province           string `json:"province"`
+	City               string `json:"city"`
+	District           string `json:"district"`
+	SubDistrict        string `json:"subDistrict"`
+	BillingName        string `json:"billingName"`
+	BillingPhone       string `json:"billingPhone"`
+	BillingAddress     string `json:"billingAddress"`
+	BillingPostalCode  string `json:"billingPostalCode"`
+	BillingCountry     string `json:"billingCountry"`
+	BillingProvince    string `json:"billingProvince"`
+	BillingCity        string `json:"billingCity"`
+	BillingDistrict    string `json:"billingDistrict"`
+	BillingSubDistrict string `json:"billingSubDistrict"`
 }
 
 type District struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID     string  `json:"id"`
+	Name   string  `json:"name"`
+	Lat    *string `json:"lat"`
+	Lon    *string `json:"lon"`
+	CityID *int    `json:"cityId"`
+	City   *City   `json:"city"`
 }
 
-type GqlCustomer struct {
-	ID              int                  `json:"id"`
-	FirstName       string               `json:"first_name"`
-	LastName        string               `json:"last_name"`
-	CompanyName     string               `json:"company_name"`
-	Email           string               `json:"email"`
-	Phone           string               `json:"phone"`
-	CustomerAddress *GqlCustomerAddresse `json:"customer_address"`
-}
-
-type GqlCustomerAddresse struct {
-	ID                 int    `json:"id"`
-	Name               string `json:"name"`
-	Phone              string `json:"phone"`
-	Address            string `json:"address"`
-	PostalCode         string `json:"postal_code"`
-	Country            string `json:"country"`
-	Province           string `json:"province"`
-	City               string `json:"city"`
-	SubDistrict        string `json:"sub_district"`
-	BillingName        string `json:"billing_name"`
-	BillingPhone       string `json:"billing_phone"`
-	BillingAddress     string `json:"billing_address"`
-	BillingPostalCode  string `json:"billing_postal_code"`
-	BillingCountry     string `json:"billing_country"`
-	BillingProvince    string `json:"billing_province"`
-	BillingCity        string `json:"billing_city"`
-	BillingSubDistrict string `json:"billing_sub_district"`
-}
-
-type GqlCustomerAddresseInput struct {
-	Name               string `json:"name"`
-	Phone              string `json:"phone"`
-	Address            string `json:"address"`
-	PostalCode         string `json:"postal_code"`
-	Country            string `json:"country"`
-	Province           string `json:"province"`
-	City               string `json:"city"`
-	SubDistrict        string `json:"sub_district"`
-	BillingName        string `json:"billing_name"`
-	BillingPhone       string `json:"billing_phone"`
-	BillingAddress     string `json:"billing_address"`
-	BillingPostalCode  string `json:"billing_postal_code"`
-	BillingCountry     string `json:"billing_country"`
-	BillingProvince    string `json:"billing_province"`
-	BillingCity        string `json:"billing_city"`
-	BillingSubDistrict string `json:"billing_sub_district"`
-}
-
-type GqlCustomerInput struct {
-	FirstName       string                    `json:"first_name"`
-	LastName        string                    `json:"last_name"`
-	CompanyName     string                    `json:"company_name"`
-	Email           string                    `json:"email"`
-	Phone           string                    `json:"phone"`
-	CustomerAddress *GqlCustomerAddresseInput `json:"customer_address"`
-}
-
-type NewCustomerAddress struct {
-	Countries    []*Countrie    `json:"countries"`
-	Provinces    []*Province    `json:"provinces"`
-	Cities       []*Citie       `json:"cities"`
-	SubDistricts []*SubDistrict `json:"sub_districts"`
-}
-
-type OrderDropshipper struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Phone       string `json:"phone"`
-	Address1    string `json:"address_1"`
-	PostalCode  string `json:"postal_code"`
-	Country     string `json:"country"`
-	Province    string `json:"province"`
-	City        string `json:"city"`
-	SubDistrict string `json:"sub_district"`
-}
-
-type OrderDropshipperInput struct {
-	Name        string `json:"name"`
-	Phone       string `json:"phone"`
-	Address1    string `json:"address_1"`
-	PostalCode  string `json:"postal_code"`
-	Country     string `json:"country"`
-	Province    string `json:"province"`
-	City        string `json:"city"`
-	SubDistrict string `json:"sub_district"`
+type DistrictInput struct {
+	CityID int `json:"cityId"`
 }
 
 type Province struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID        string   `json:"id"`
+	Name      *string  `json:"name"`
+	Lat       *string  `json:"lat"`
+	Lon       *string  `json:"lon"`
+	CountryID *int     `json:"countryId"`
+	Country   *Country `json:"country"`
 }
 
 type ProvinceInput struct {
-	CountryID int `json:"country_id"`
+	CountryID int `json:"countryId"`
+}
+
+type ShippingAddressInput struct {
+	Name          string `json:"name"`
+	Phone         string `json:"phone"`
+	Address       string `json:"address"`
+	PostalCode    string `json:"postalCode"`
+	SubDistrictID int    `json:"subDistrictId"`
 }
 
 type SubDistrict struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID         string    `json:"id"`
+	Name       *string   `json:"name"`
+	Lat        *string   `json:"lat"`
+	Lon        *string   `json:"lon"`
+	PostalCode *string   `json:"postalCode"`
+	DistrictID *int      `json:"districtId"`
+	District   *District `json:"district"`
 }
 
 type SubDistrictInput struct {
-	CityID int `json:"city_id"`
+	DistrictID int `json:"districtId"`
 }
