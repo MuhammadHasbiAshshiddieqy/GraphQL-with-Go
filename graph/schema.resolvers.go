@@ -114,8 +114,17 @@ func (r *queryResolver) Customers(ctx context.Context, search string, limit *int
 func (r *queryResolver) Customer(ctx context.Context, id int) (*model.Customer, error) {
 	var customer []*model.Customer
 	var address []*model.CustomerAddress
+	var profileIDInt *int
 
-	err := r.DB.Set("gorm:auto_preload", true).Where("id = ?", id).Find(&customer).Error
+	profileIDInt = new(int)
+
+	profileID := ctx.Value(Key{}).(string)
+	*profileIDInt = fixProfileID(profileID)
+	if (*profileIDInt == 0) {
+		return nil, nil
+	}
+
+	err := r.DB.Set("gorm:auto_preload", true).Where("id = ? AND profile_id = ?", id, *profileIDInt).Find(&customer).Error
 	if err != nil {
 		return nil, err
 	}
